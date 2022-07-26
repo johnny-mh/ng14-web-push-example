@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WindowService } from './services/window.service';
 
 @Component({
   selector: 'ng14swtest-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'ng14swtest';
+  constructor(protected win: WindowService) {
+    console.log(process.env.NODE_ENV);
+  }
 }

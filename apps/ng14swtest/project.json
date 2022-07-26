@@ -7,7 +7,7 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/ng14swtest",
+        "outputPath": "dist/ng14swtest/browser",
         "index": "apps/ng14swtest/src/index.html",
         "main": "apps/ng14swtest/src/main.ts",
         "polyfills": "apps/ng14swtest/src/polyfills.ts",
@@ -54,12 +54,35 @@
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "port": 8080,
+        "host": "0.0.0.0",
+        "disableHostCheck": true
+      },
       "configurations": {
         "production": {
           "browserTarget": "ng14swtest:build:production"
         },
         "development": {
           "browserTarget": "ng14swtest:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-ssr": {
+      "builder": "@nguniversal/builders:ssr-dev-server",
+      "options": {
+        "port": 8080,
+        "host": "0.0.0.0"
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "ng14swtest:build:development",
+          "serverTarget": "ng14swtest:server:development"
+        },
+        "production": {
+          "browserTarget": "ng14swtest:build:production",
+          "serverTarget": "ng14swtest:server:production"
         }
       },
       "defaultConfiguration": "development"
@@ -86,6 +109,31 @@
         "jestConfig": "apps/ng14swtest/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/ng14swtest/server",
+        "main": "apps/ng14swtest/src/ssr.server.ts",
+        "tsConfig": "apps/ng14swtest/tsconfig.server.json"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/ng14swtest/src/environments/environment.ts",
+              "with": "apps/ng14swtest/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production"
     }
   },
   "tags": []

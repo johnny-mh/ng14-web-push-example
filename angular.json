@@ -2,7 +2,6 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "ng14swtest": "apps/ng14swtest",
-    "ng14swtest-e2e": "apps/ng14swtest-e2e"
+    "ng14swtest": "apps/ng14swtest"
   }
 }
