@@ -1,11 +1,16 @@
 import 'zone.js/node';
 
+import webpush from 'web-push';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
 import { join } from 'path';
 
 import { AppServerModule } from './main.server';
 import { APP_BASE_HREF } from '@angular/common';
+import router from '../server';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
@@ -24,9 +29,10 @@ export function app() {
   server.set('views', distFolder);
 
   // TODO: implement data requests securely
-  server.get('/api/**', (req, res) => {
-    res.status(404).send('data requests are not yet supported');
-  });
+  // server.get('/api/**', (req, res) => {
+  //   res.status(404).send('data requests are not yet supported');
+  // });
+  server.use('/api', router);
 
   // Serve static files from /browser
   server.get(
@@ -48,10 +54,24 @@ export function app() {
 }
 
 function run() {
-  const port = process.env['PORT'] || 4000;
+  const VAPIDPublicKey = process.env['VAPID_PUBLIC_KEY'];
+  const VAPIDPrivateKey = process.env['VAPID_PRIVATE_KEY'];
+
+  if (!VAPIDPublicKey || !VAPIDPrivateKey) {
+    throw new Error('need web-push vapid keys');
+  }
+
+  webpush.setVapidDetails(
+    'mailto:test@test.com',
+    VAPIDPublicKey,
+    VAPIDPrivateKey
+  );
+
+  const port = process.env['PORT'] || 8080;
 
   // Start up the Node server
   const server = app();
+
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });

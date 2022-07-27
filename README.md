@@ -1,105 +1,63 @@
+# Angular 웹 푸시 테스트
+
+## 개발서버 실행
+
+### 환경변수 설정
+
+```bash
+# 의존 모듈 설치
+npm install
 
 
-# Ng14swtest
+# 웹 푸시 키 생성
+npx web-push generate-vapid-keys
 
-This project was generated using [Nx](https://nx.dev).
+=======================================
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+Public Key:
+{VAPID 공개키}
 
-🔎 **Smart, Fast and Extensible Build System**
+Private Key:
+{VAPID 비밀키}
 
-## Quick Start & Documentation
+=======================================
+```
 
-[Nx Documentation](https://nx.dev/angular)
+공개키는 `environment.ts`에 추가한다
 
-[10-minute video showing all Nx features](https://nx.dev/getting-started/intro)
+```ts
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
-[Interactive Tutorial](https://nx.dev/react-tutorial/01-create-application)
+export const environment = {
+  production: false,
+  VAPIDPublicKey: '{VAPID 공개키}',
+};
 
-## Adding capabilities to your workspace
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+```
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+리포지토리 루트에 `.env` 파일을 만들고 공개키, 비밀키 둘 다 등록한다
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+```bash
+VAPID_PUBLIC_KEY={VAPID 공개키}
+VAPID_PRIVATE_KEY={VAPID 비밀키}
+```
 
-Below are our core plugins:
+### 서버 실행
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+```bash
+npx nx run serve-ssr
+```
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+실행 후 http://localhost:8080 접속해서 테스트 가능
 
-## Generate an application
-
-Run `ng g @nrwl/angular:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@ng14swtest/mylib`.
-
-## Development server
-
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
-
-
-
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+구독 버튼을 누르면 브라우저 알림 권한 획득을 위한 확인이 뜨고. 허용하면 5초 후에 웹 푸시가 전송되도록 구현되어 있다.

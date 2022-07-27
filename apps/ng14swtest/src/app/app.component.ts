@@ -1,13 +1,8 @@
-import { Component } from '@angular/core';
-import { WindowService } from './services/window.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ng14swtest-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  template: `<ng14swtest-noti></ng14swtest-noti>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  constructor(protected win: WindowService) {
-    console.log(process.env.NODE_ENV);
-  }
-}
+export class AppComponent {}

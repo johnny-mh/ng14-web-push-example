@@ -14,10 +14,14 @@
         "tsConfig": "apps/ng14swtest/tsconfig.app.json",
         "assets": [
           "apps/ng14swtest/src/favicon.ico",
-          "apps/ng14swtest/src/assets"
+          "apps/ng14swtest/src/assets",
+          "apps/ng14swtest/src/manifest.webmanifest",
+          "apps/ng14swtest/src/notification-service-worker.js"
         ],
         "styles": ["apps/ng14swtest/src/styles.css"],
-        "scripts": []
+        "scripts": [],
+        "serviceWorker": true,
+        "ngswConfigPath": "apps/ng14swtest/ngsw-config.json"
       },
       "configurations": {
         "production": {
